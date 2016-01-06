@@ -1,8 +1,8 @@
 #include<iostream>
 #include<vector>
 #include<cstdlib>
-std::vector<char> board = {'0','1','2','3','4','5','6','7','8','9'};
-
+#include<array>
+std::array<char, 10> board = {'0','1','2','3','4','5','6','7','8','9'};
 class Tic{	
 	public:
 	int HumanMove(unsigned int pos, char X){
@@ -36,39 +36,35 @@ class Tic{
 			if(i==5)
 				i++;
 		}
+		WinFunc(Y);
 	}
 	void Board(){
 		std::cout << board[1] << "|" << board[2] << "|" << board[3] << std::endl;
 		std::cout << board[4] << "|" << board[5] << "|" << board[6] << std::endl;
 		std::cout << board[7] << "|" << board[8] << "|" << board[9] << std::endl;
 	}
-
-	void check()
-
-	void WinRows(int mark)
+	void WinFunc(char mark)
 	{
-		       char win[8][5] = {"0","1","2","3",
-					 "1","4","5","6",
-					 "2","7","8","9",
-	       				 "3","1","4","7",
-					 "4","2","5","8",
-	     				 "5","3","6","9",
-	 			         "6","1","5","9",																			 "7","3","5","7"
-				         "7","3","5","7"
-					};
-		if(mark == win[0][0])
+		char win[8][4] = { {'0','1','2','3'},{'1','4','5','6'},
+			    	   {'2','7','8','9'},{'3','1','4','7'},
+				   {'4','2','5','8'},{'5','3','6','9'},
+				   {'6','1','5','9'},{'7','3','5','7'} };
+		for(int i=0;i<=3;i++)
 		{
-			std::cout << "First Match" << std::endl;
+			if(mark == win[0][0])
+			{
+				std::cout << "First Match" << std::endl;
+			}
+			else if(mark == win[1][3])
+			{
+				std::cout << "Second Match" << std::endl;
+			}
+			else if(mark == win[3][4])
+			{
+				std::cout << "Thrid Match" << std::endl;
+				std::cout << "You Win "    << std::endl;
+			}
 		}
-		else if(mark == win[0][1])
-		{
-			std::cout << "Second Match" << std::endl;
-		}
-		else if(mark == win[0][2])
-		{
-			std::cout << "Thrid Match" << std::endl;
-			std::cout << "You Win "    << std::endl;
-		}	
 	}
 };	
 int main(){
@@ -83,13 +79,15 @@ int main(){
         	while(T.HumanMove(pos,X)){
         		std::cout << "On which postion: 1-9" << std::endl;
         		std::cin >> pos;
+			if(pos!='0')
+			{
+				for(int y=0;y<=3;y++)
+				{
+					T.WinFunc(X);
+				}
+			}
 		}
-		std::cout << std::endl;
-		T.Board();
 		T.ComputerMove(Y);
-		std::cout << std::endl;
-		T.Board();
-		std::cout << std::endl;
 	}
 	return 0;
 }
